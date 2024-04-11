@@ -166,16 +166,12 @@ const compareSelectedPokemons = async () => {
         <div class="stats-container">
             ${generateStatsHTML(firstSelectedPokemon, pokemon1BarColors)}
         </div>
-        <p>Weight: ${firstSelectedPokemon.weight}</p>
-        <p>Height: ${firstSelectedPokemon.height}</p>
         <h3><span style="text-transform: uppercase; font-weight: bold;">${
           secondSelectedPokemon.name
         }</span>:</h3>
         <div class="stats-container">
             ${generateStatsHTML(secondSelectedPokemon, pokemon2BarColors)}
         </div>
-        <p>Weight: ${secondSelectedPokemon.weight}</p>
-        <p>Height: ${secondSelectedPokemon.height}</p>
     `;
 
   // Insert the HTML into the container for comparison results
@@ -225,10 +221,15 @@ const fetchPokemonDetails = async (pokemonName) => {
     const types = data.types.map((type) => type.type.name);
     const weight = data.weight;
     const height = data.height;
-    const stats = data.stats.map((stat) => ({
-      name: stat.stat.name,
-      value: stat.base_stat,
-    }));
+    // Створення масиву stats, що вже включає вагу та зріст
+    const stats = [
+      ...data.stats.map((stat) => ({
+        name: stat.stat.name,
+        value: stat.base_stat,
+      })),
+      { name: "weight", value: weight }, // Додавання ваги
+      { name: "height", value: height }, // Додавання зросту
+    ];
 
     // Create a new Pokemon object with the extracted data
     return new Pokemon(name, image, types, weight, height, stats);
