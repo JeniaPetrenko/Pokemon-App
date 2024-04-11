@@ -1,47 +1,120 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-image: url(/img/annie-spratt-0ZPSX_mQ3xI-unsplash.jpg);
+    background-size: cover;
     margin: 0;
     padding: 20px;
 }
+
+
 
 h1 {
     text-align: center;
     color: #333;
 }
 
+h2 {
+    text-transform: capitalize;
+}
+
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #7f2a6d;
+    font-weight: bold;
+
 }
 
 select,
 button {
     margin-bottom: 10px;
-}
-
-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
     padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #1ec8d8;
+    background-color: #f9f9f9;
+    color: #333;
     cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
+select:hover,
 button:hover {
-    background-color: #0056b3;
+    background-color: #e9e9e9;
+    border-color: #999;
+    color: #222;
 }
 
+select:focus,
+button:focus {
+    outline: none;
+    border-color: #555;
+}
+
+.choosePokemon {
+    display: flex;
+    justify-content: space-around;
+    /* Це розподіляє простір навколо елементів */
+    align-items: flex-start;
+    /* Це вирівнює елементи за початком контейнера */
+    flex-wrap: wrap;
+    /* Додаткове центрування */
+}
+
+.pokemonDetailsContainer {
+    display: flex;
+    justify-content: space-around;
+    /* Це розподіляє простір навколо елементів */
+    align-items: flex-start;
+    /* Це вирівнює елементи за початком контейнера */
+    flex-wrap: wrap;
+    /* Дозволяє елементам обгортатися на новий рядок, якщо не вистачає місця */
+}
+
+#compareButton {
+    display: block;
+    /* Робить кнопку блочним елементом */
+    margin: 20px auto;
+    /* Додає вертикальний відступ та автоматичний горизонтальний відступ */
+    padding: 10px 20px;
+    /* Відступи всередині кнопки для зручності натискання */
+    font-size: 16px;
+    /* Розмір шрифту для кнопки */
+    cursor: pointer;
+    /* Вказівник курсору змінюється, коли наводиш на кнопку */
+    border-radius: 5px;
+    /* Закруглені кути для кращого візуального вигляду */
+    background-color: rgb(70, 206, 208);
+    /* Колір фону кнопки */
+    color: #ffffff;
+    /* Колір тексту кнопки */
+    border: #121010;
+    /* Відсутність рамки */
+    /* Плавна анімація при наведенні */
+}
 
 
 #pokemonDetails1,
-#pokemonDetails2,
+#pokemonDetails2 {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: rgb(251, 196, 180, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: auto;
+    width: 300px;
+}
+
 #comparisonResult {
     margin-top: 20px;
     padding: 10px;
-    background-color: #fff;
-    border-radius: 5px;
+    background-color: rgb(251, 196, 180, 0.5);
+    border-radius: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: auto;
+    width: auto;
+
 }
 
 #pokemonDetails1 img,
@@ -52,12 +125,19 @@ button:hover {
 }
 
 #comparisonResult {
-    text-align: center;
+    margin: 30px;
+    padding: 30px;
+    background-color: rgb(251, 196, 180, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: auto;
+    width: auto;
+
 }
 
 .bar {
     height: 10px;
-    background-color: #007bff;
+    background-color: rgb(19, 191, 193);
     /* Blue color */
     margin-top: 5px;
 }
