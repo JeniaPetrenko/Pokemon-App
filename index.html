@@ -3,16 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pokedex</title>
+    <title>PokedexExam</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <h1>Pokedex</h1>
-    <label for="pokemonSelect">Välj en Pokemon:</label>
-    <select id="pokemonSelect"></select>
-    <button id="getInfo">Get Pokemon info</button>
+    <div class="mainContainer">
+      <label for="pokemonSelect1">Välj första Pokemon:</label>
+      <select id="pokemonSelect1"></select>
+      <button id="firstPokemonBtn">Vissa första Pokemon</button>
+      <div id="pokemonDetails1"></div>
+      <br />
 
-    <div id="pokemonDetails"></div>
-    <script src="main.js"></script>
+      <label for="pokemonSelect2">Välj andra Pokemon:</label>
+      <select id="pokemonSelect2"></select>
+      <button id="secondPokemonBtn">Vissa andra Pokemon</button>
+      <div id="pokemonDetails2"></div>
+
+      <br />
+      <button id="compareButton">Jämför Pokémon</button>
+      <div id="comparisonResult"></div>
+    </div>
+    <script src="main.js" defer></script>
   </body>
 </html>
