@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PokedexExam</title>
+    <title>Pokedex Battle Simulator</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -11,25 +11,34 @@
     <main class="main">
       <div class="choosePokemon">
         <div class="pokemonSelection">
-          <label for="pokemonSelect1">Välj första Pokemon:</label>
+          <label for="pokemonSelect1">Choose your first Pokemon:</label>
           <select id="pokemonSelect1"></select>
-          <button id="firstPokemonBtn">Vissa första Pokemon</button>
+          <button id="firstPokemonBtn">Show First Pokemon</button>
         </div>
+
         <div class="pokemonSelection">
-          <label for="pokemonSelect2">Välj andra Pokemon:</label>
+          <label for="pokemonSelect2">Choose your second Pokemon:</label>
           <select id="pokemonSelect2"></select>
-          <button id="secondPokemonBtn">Vissa andra Pokemon</button>
+          <button id="secondPokemonBtn">Show Second Pokemon</button>
         </div>
       </div>
 
       <div class="pokemonDetailsContainer">
-        <div id="pokemonDetails1"></div>
-        <div id="pokemonDetails2"></div>
+        <div id="pokemonDetails1" class="pokemonDetails"></div>
+        <div id="pokemonDetails2" class="pokemonDetails"></div>
       </div>
 
-      <button id="compareButton">Jämför Pokémon</button>
-      <div id="comparisonResult"></div>
+      <button id="compareButton">Compare Pokémon</button>
+
+      <div id="comparisonResult">
+        <!-- <div id="pokemonDetails1"></div>
+        <div id="pokemonDetails2"></div> -->
+      </div>
+
+      <button id="startBattleBtn">Start Battle</button>
+
+      <div id="battleLog"></div>
     </main>
-    <script src="main.js" defer></script>
+    <script src="main.js"></script>
   </body>
 </html>
