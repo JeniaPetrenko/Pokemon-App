@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Montserrat", sans-serif;
     background-image: url(/img/annie-spratt-0ZPSX_mQ3xI-unsplash.jpg);
     background-size: cover;
     margin: 0;
@@ -215,12 +215,12 @@ button:focus {
     overflow: auto;
     /* Enable scroll if needed */
     /* Fallback color */
-    background-color: rgb(251, 196, 180, 0.5);
     /* Black w/ opacity */
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-image: url(/img/annie-spratt-0ZPSX_mQ3xI-unsplash.jpg);
+    background-size: cover;
     margin: 15% auto;
     /* 15% from the top and centered */
     padding: 20px;
@@ -231,6 +231,28 @@ button:focus {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+
+
+.battle-log-messages p {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    /* Відступи між параграфами */
+    padding: 10px;
+    /* Внутрішні відступи для параграфів */
+    background-color: #fff;
+    /* Білий фон для кожного повідомлення */
+    border-radius: 5px;
+    /* Скруглені кути для повідомлень */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Тінь для елементів, що випливають */
+    font-size: 15px;
+}
+
+.battle-log-messages p:nth-child(odd) {
+    background-color: #e9e9e9;
+    /* Змінення фону для зрозумілості послідовності */
 }
 
 @keyframes attack {

@@ -169,10 +169,15 @@ const compareSelectedPokemons = async () => {
     return;
   }
 
+  console.log(
+    `Comparing ${firstSelectedPokemon.name} and ${secondSelectedPokemon.name}`
+  );
   const { result, pokemon1BarColors, pokemon2BarColors } = compareStats(
     firstSelectedPokemon,
     secondSelectedPokemon
   );
+
+  console.log("Comparison result:", result);
 
   let comparisonResultHTML = `
     <p>${result}</p>
@@ -203,9 +208,15 @@ const compareSelectedPokemons = async () => {
 };
 
 function generateStatsHTML(pokemon, barColors) {
+  console.log(`Generating stats HTML for ${pokemon.name}`);
+
   return pokemon.stats
     .map((stat, index) => {
       let barWidth = (stat.value / 200) * 100;
+      console.log(
+        `Stat: ${stat.name}, Value: ${stat.value}, Bar Width: ${barWidth}%`
+      );
+
       return `
       <div class="stat">
         <p>${stat.name}: ${stat.value}</p>
@@ -273,6 +284,7 @@ function initializeBattleLog(pokemon1, pokemon2) {
         <span class="hp-text">${
           pokemon1.stats.find((s) => s.name === "hp").value
         } HP</span>
+        
       </div>
       <div id="${pokemon2.name}-hp-bar" class="hp-bar">
         <div class="hp-bar-fill" style="width: 100%"></div>
@@ -309,8 +321,10 @@ async function battle() {
       : defender;
   console.log(`${winner.name} wins the battle!`);
 
+  // Оновлення оголошення перемоги з додаванням зображення переможця
   const winnerAnnouncement = document.querySelector(".winner-announcement");
-  winnerAnnouncement.innerHTML = `<h3>${winner.name} wins the battle!</h3>`; // Update the winner announcement
+  winnerAnnouncement.innerHTML = `<h3>${winner.name} wins the battle!</h3>
+  <img src="${winner.image}" alt="Winner: ${winner.name}" style="width:100px; height:auto;">`; // Додано картинку переможця
 }
 
 document.getElementById("startBattleBtn").addEventListener("click", () => {
@@ -318,28 +332,71 @@ document.getElementById("startBattleBtn").addEventListener("click", () => {
     alert("Please select both Pokémon before starting the battle!");
     return;
   }
+  // Очищення логу бою
+  const battleLog = document.getElementById("battleLog");
+  const battleMessages = document.querySelector(".battle-log-messages");
+  const winnerAnnouncement = document.querySelector(".winner-announcement");
+  battleLog.innerHTML = "";
+  battleMessages.innerHTML = "";
+  winnerAnnouncement.innerHTML = "";
+
+  // Відновлення початкового здоров'я
+  resetPokemonStats(firstSelectedPokemon);
+  resetPokemonStats(secondSelectedPokemon);
+
+  // Ініціалізація бою
+  initializeBattleLog(firstSelectedPokemon, secondSelectedPokemon);
   battle(firstSelectedPokemon, secondSelectedPokemon);
 });
 
+function resetPokemonStats(pokemon) {
+  // Відновлення здоров'я до початкового максимального значення, збереженого в maxValue
+  pokemon.stats.forEach((stat) => {
+    if (stat.name === "hp") {
+      stat.value = stat.maxValue;
+    }
+  });
+  // Оновлення шкали здоров'я після скидання статистики
+  updateHealthBar(pokemon);
+}
+
 function updateHealthBar(pokemon) {
   const hpBarContainer = document.getElementById(`${pokemon.name}-hp-bar`);
-  if (!hpBarContainer) {
+  if (hpBarContainer) {
+    const hpBar = hpBarContainer.querySelector(".hp-bar-fill");
+    const hpText = hpBarContainer.querySelector(".hp-text");
+    const hpStat = pokemon.stats.find((stat) => stat.name === "hp");
+    const hpPercentage = (hpStat.value / hpStat.maxValue) * 100;
+
+    hpBar.style.width = `${hpPercentage}%`;
+    hpText.innerText = `${hpStat.value} HP`;
+    console.log(
+      `Updated ${pokemon.name} HP bar: ${hpStat.value} / ${hpStat.maxValue}`
+    );
+  } else {
     console.error(`HP bar container for ${pokemon.name} not found.`);
+  }
+}
+
+document.getElementById("startBattleBtn").addEventListener("click", () => {
+  if (!firstSelectedPokemon || !secondSelectedPokemon) {
+    alert("Please select both Pokémon before starting the battle!");
     return;
   }
+  // Очищення логу бою
+  const battleMessages = document.querySelector(".battle-log-messages");
+  const winnerAnnouncement = document.querySelector(".winner-announcement");
+  battleMessages.innerHTML = "";
+  winnerAnnouncement.innerHTML = "";
 
-  // Assuming max HP is stored or initially set as the max value in 'stats'
-  const initialHp = pokemon.stats.find((stat) => stat.name === "hp").maxValue;
-  const currentHp = pokemon.stats.find((stat) => stat.name === "hp").value;
-  const hpPercentage = (currentHp / initialHp) * 100;
+  // Відновлення статистики покемонів
+  resetPokemonStats(firstSelectedPokemon);
+  resetPokemonStats(secondSelectedPokemon);
 
-  const hpBar = hpBarContainer.querySelector(".hp-bar-fill");
-  const hpText = hpBarContainer.querySelector(".hp-text");
-  hpBar.style.width = `${hpPercentage}%`;
-  hpText.innerText = `${currentHp} HP`;
-
-  console.log(`Updated ${pokemon.name} HP bar: ${currentHp} / ${initialHp}`);
-}
+  // Переініціалізація бою
+  initializeBattleLog(firstSelectedPokemon, secondSelectedPokemon);
+  battle(firstSelectedPokemon, secondSelectedPokemon);
+});
 
 document.getElementById("startBattleBtn").addEventListener("click", () => {
   if (!firstSelectedPokemon || !secondSelectedPokemon) {
