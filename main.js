@@ -7,7 +7,13 @@ class Pokemon {
     this.weight = weight;
     this.height = height;
     this.stats = stats;
-    this.moves = moves; // Moves for battle
+    this.moves = moves;
+    // Set initial HP as maxValue for reference
+    this.stats.forEach((stat) => {
+      if (stat.name === "hp") {
+        stat.maxValue = stat.value;
+      }
+    });
   }
 
   showDetails = () => {
@@ -93,6 +99,7 @@ let firstSelectedPokemon = null;
 let secondSelectedPokemon = null;
 
 async function fetchPokemonDetails(pokemonName) {
+  console.log(`Fetching details for ${pokemonName}`);
   try {
     const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
@@ -209,42 +216,50 @@ function generateStatsHTML(pokemon, barColors) {
     .join("");
 }
 
-async function battle() {
-  if (!firstSelectedPokemon || !secondSelectedPokemon) {
-    alert("Please select both Pokémon before starting the battle!");
-    return;
+// Get the modal
+let modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+let btn = document.getElementById("startBattleBtn");
+
+// Get the <span> element that closes the modal
+let span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function () {
+  modal.style.display = "block";
+};
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
   }
-  initializeBattleLog(firstSelectedPokemon, secondSelectedPokemon);
-
-  let attacker = firstSelectedPokemon;
-  let defender = secondSelectedPokemon;
-  let winner = null;
-
-  while (
-    attacker.stats.find((stat) => stat.name === "hp").value > 0 &&
-    defender.stats.find((stat) => stat.name === "hp").value > 0
-  ) {
-    await performAttack(attacker, defender); // Використовуєте async/await для чекання завершення атаки
-    [attacker, defender] = [defender, attacker]; // Міняємо ролі атакувальника та захисника
-  }
-
-  winner =
-    attacker.stats.find((stat) => stat.name === "hp").value > 0
-      ? attacker
-      : defender;
-  document.getElementById(
-    "battleLog"
-  ).innerHTML += `<h3>${winner.name} wins the battle!</h3>`;
-}
+};
 
 async function performAttack(attacker, defender) {
   const attackMove =
     attacker.moves[Math.floor(Math.random() * attacker.moves.length)];
   const damage = calculateDamage(attackMove);
   const defenderHpStat = defender.stats.find((stat) => stat.name === "hp");
+
+  // Apply damage
   defenderHpStat.value = Math.max(0, defenderHpStat.value - damage);
+
+  // Log attack details
+  const battleMessages = document.querySelector(".battle-log-messages");
+  battleMessages.innerHTML += `<p>${attacker.name} used ${attackMove.name} and did ${damage} damage. ${defender.name} remaining HP: ${defenderHpStat.value}.</p>`;
+
+  // Update health bar
   updateHealthBar(defender);
-  await new Promise((resolve) => setTimeout(resolve, 1000)); // Симуляція тривалості ходу
+
+  // Wait a bit before the next move to simulate the attack visually
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 }
 
 function initializeBattleLog(pokemon1, pokemon2) {
@@ -266,8 +281,45 @@ function initializeBattleLog(pokemon1, pokemon2) {
         } HP</span>
       </div>
     </div>
-    <div class="battle-log-messages"></div>`;
+    <div class="battle-log-messages"></div>
+    <div class="winner-announcement"></div>`; // Dedicated place for winner announcement
 }
+async function battle() {
+  if (!firstSelectedPokemon || !secondSelectedPokemon) {
+    alert("Please select both Pokémon before starting the battle!");
+    return;
+  }
+  initializeBattleLog(firstSelectedPokemon, secondSelectedPokemon);
+
+  let attacker = firstSelectedPokemon;
+  let defender = secondSelectedPokemon;
+
+  while (
+    attacker.stats.find((stat) => stat.name === "hp").value > 0 &&
+    defender.stats.find((stat) => stat.name === "hp").value > 0
+  ) {
+    console.log(`Attacker: ${attacker.name}, Defender: ${defender.name}`);
+    await performAttack(attacker, defender);
+    [attacker, defender] = [defender, attacker];
+  }
+
+  const winner =
+    attacker.stats.find((stat) => stat.name === "hp").value > 0
+      ? attacker
+      : defender;
+  console.log(`${winner.name} wins the battle!`);
+
+  const winnerAnnouncement = document.querySelector(".winner-announcement");
+  winnerAnnouncement.innerHTML = `<h3>${winner.name} wins the battle!</h3>`; // Update the winner announcement
+}
+
+document.getElementById("startBattleBtn").addEventListener("click", () => {
+  if (!firstSelectedPokemon || !secondSelectedPokemon) {
+    alert("Please select both Pokémon before starting the battle!");
+    return;
+  }
+  battle(firstSelectedPokemon, secondSelectedPokemon);
+});
 
 function updateHealthBar(pokemon) {
   const hpBarContainer = document.getElementById(`${pokemon.name}-hp-bar`);
@@ -275,13 +327,18 @@ function updateHealthBar(pokemon) {
     console.error(`HP bar container for ${pokemon.name} not found.`);
     return;
   }
+
+  // Assuming max HP is stored or initially set as the max value in 'stats'
+  const initialHp = pokemon.stats.find((stat) => stat.name === "hp").maxValue;
+  const currentHp = pokemon.stats.find((stat) => stat.name === "hp").value;
+  const hpPercentage = (currentHp / initialHp) * 100;
+
   const hpBar = hpBarContainer.querySelector(".hp-bar-fill");
   const hpText = hpBarContainer.querySelector(".hp-text");
-  const hpStat = pokemon.stats.find((stat) => stat.name === "hp");
-  const hpPercentage = (hpStat.value / 100) * 100; // Assuming max HP is 100 for simplicity
-
   hpBar.style.width = `${hpPercentage}%`;
-  hpText.innerText = `${hpStat.value} HP`;
+  hpText.innerText = `${currentHp} HP`;
+
+  console.log(`Updated ${pokemon.name} HP bar: ${currentHp} / ${initialHp}`);
 }
 
 document.getElementById("startBattleBtn").addEventListener("click", () => {

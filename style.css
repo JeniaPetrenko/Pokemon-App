@@ -118,7 +118,7 @@ button:focus {
 
 }
 
-.pokemon-comparison {
+/* .pokemon-comparison {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -127,6 +127,15 @@ button:focus {
     border-radius: 20px;
     box-shadow: 0 2px 4px rgba(190, 8, 8, 0.1);
     margin-top: 20px;
+} */
+
+.pokemon-comparison,
+.battle-stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
 }
 
 #pokemonDetails1 img,
@@ -136,10 +145,12 @@ button:focus {
     margin: 0 auto;
 }
 
-div.pokemon-comparison {
-    display: flex;
-    font-size: 20px;
+.pokemon-comparison h3 {
+    margin-top: 0;
+    color: rgb(198, 28, 138);
+    font-weight: bold;
 }
+
 
 /* div.stat {}
  */
@@ -150,6 +161,8 @@ div.pokemon-comparison {
     /* Blue color */
     margin-top: 5px;
 }
+
+
 
 .stats-container {
     margin-top: 10px;
@@ -168,9 +181,12 @@ div.pokemon-comparison {
 }
 
 .hp-bar-fill {
-    height: 100%;
+    height: 20px;
     background-color: red;
     transition: width 0.5s ease;
+    display: flex;
+
+
 }
 
 .hp-text {
@@ -178,7 +194,43 @@ div.pokemon-comparison {
     width: 100%;
     text-align: center;
     line-height: 20px;
-    font-size: 14px;
+    font-size: 20px;
+    color: rgb(42, 201, 219);
+}
+
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    /* Fallback color */
+    background-color: rgb(251, 196, 180, 0.5);
+    /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    /* Could be more or less, depending on screen size */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 @keyframes attack {
