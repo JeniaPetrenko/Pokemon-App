@@ -71,12 +71,6 @@ button:focus {
     flex-wrap: wrap;
 }
 
-#comparisonResult {
-    display: flex;
-    flex-direction: column;
-}
-
-
 #pokemonDetailsOne,
 #pokemonDetailsTwo {
     margin-top: 20px;
@@ -96,13 +90,20 @@ button:focus {
 
 }
 
-.pokemon-comparison {
+p {
+    display: block;
+    line-height: 1.5;
+}
+
+#comparisonResult p {
+    line-height: 2.5;
+}
+
+.comparison-container {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    /* Це розподіляє простір навколо елементів */
     align-items: flex-start;
-    /* Це вирівнює елементи за початком контейнера */
     flex-wrap: wrap;
 
     h3 {
@@ -111,10 +112,10 @@ button:focus {
     }
 }
 
+/*stats scale*/
 .bar {
     height: 12px;
     background-color: rgb(19, 191, 193);
-    /* Blue color */
     margin-top: 5px;
     border-radius: 5px;
 }
@@ -138,11 +139,14 @@ button:focus {
 
 .stats-container {
     margin-top: 10px;
+    margin-left: 10px;
 }
 
 .stat p {
     margin: 5px 0;
 }
+
+
 
 
 .hp-bar-fill {
@@ -173,11 +177,8 @@ button:focus {
 
 .modal {
     display: none;
-    /* Hidden by default */
     position: fixed;
-    /* Stay in place */
     z-index: 1;
-    /* Sit on top */
     left: 0;
     top: 0;
     width: 100%;

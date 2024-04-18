@@ -1,4 +1,5 @@
 // Class representing a Pokemon
+// Constructor function for creating new Pokemon instances with specified properties
 class Pokemon {
   constructor(name, image, types, weight, height, stats, moves) {
     this.name = name;
@@ -10,13 +11,15 @@ class Pokemon {
     this.moves = moves;
     // Set initial HP as maxValue for HP tracking
     this.stats.forEach((stat) => {
+      // Iterate over each stat in the stats array
       if (stat.name === "hp") {
-        stat.maxValue = stat.value;
+        stat.maxValue = stat.value; // Set the maxValue property of the "hp" stat to its current value
       }
     });
     console.log(`Pokemon created: ${this.name}`);
   }
 
+  //method
   showDetails() {
     let statsHTML = this.stats
       .map(
@@ -27,7 +30,7 @@ class Pokemon {
       </div>
     `
       )
-      .join("");
+      .join(""); //convert the array of hyml strings into a single string
 
     console.log(`Details shown for ${this.name}`);
     return `
@@ -42,73 +45,83 @@ class Pokemon {
   }
 }
 
+// Define a function named compareStats that takes two Pokemon objects as parameters
 const compareStats = (pokemon1, pokemon2) => {
-  let pokemon1Wins = 0;
+  let pokemon1Wins = 0; //varibale to track the number of wins
   let pokemon2Wins = 0;
-  const pokemon1BarColors = [];
+  const pokemon1BarColors = []; //empty array to store bar colors for pokemon
   const pokemon2BarColors = [];
 
+  // Compare weight of the two Pokemons
   if (pokemon1.weight > pokemon2.weight) {
     pokemon1Wins++;
   } else if (pokemon1.weight < pokemon2.weight) {
     pokemon2Wins++;
   }
-  let weightMessage = `Weight Comparison: ${pokemon1.name} (${pokemon1.weight}) vs ${pokemon2.name} (${pokemon2.weight})`;
 
+  // Compare height of the two Pokemons
   if (pokemon1.height > pokemon2.height) {
     pokemon1Wins++;
   } else if (pokemon1.height < pokemon2.height) {
     pokemon2Wins++;
   }
-  let heightMessage = `Height Comparison: ${pokemon1.name} (${pokemon1.height}) vs ${pokemon2.name} (${pokemon2.height})`;
 
-  console.log(weightMessage);
-  console.log(heightMessage);
-
+  // Compare the stats of the Pokemons
+  // Iterate over each stat of Pokemon 1
   pokemon1.stats.forEach((stat, index) => {
-    const opponentStat = pokemon2.stats[index]; // Використовуємо індекс для отримання відповідної статистики покемона 2
+    const opponentStat = pokemon2.stats[index]; // Get the corresponding stat of Pokemon 2
     if (stat.value > opponentStat.value) {
-      pokemon1Wins++;
-      pokemon1BarColors.push("green");
-      pokemon2BarColors.push("red");
+      pokemon1Wins++; // Increment the number of wins for Pokemon 1
+      pokemon1BarColors.push("green"); // Push "green" to the bar colors array for Pokemon 1
+      pokemon2BarColors.push("red"); // Push "red" to the bar colors array for Pokemon 2
     } else if (stat.value < opponentStat.value) {
-      pokemon2Wins++;
+      pokemon2Wins++; //
       pokemon1BarColors.push("red");
       pokemon2BarColors.push("green");
     } else {
-      pokemon1BarColors.push("gray");
-      pokemon2BarColors.push("gray");
+      // If the stat values are equal
+      pokemon1BarColors.push("gray"); // Push "gray" to the bar colors array for Pokemon 1
+      pokemon2BarColors.push("gray"); // Push "gray" to the bar colors array for Pokemon 2
     }
-    console.log(
-      `Stat comparison for ${stat.name}: ${pokemon1.name} (${stat.value}) vs ${pokemon2.name} (${opponentStat.value})`
-    );
   });
 
   let comparisonResult = `
-  <p style="font-weight: bold; font-size: 20px; color: #423f3a;">Result: </p> 
-  <p>
-    <span style="color: blue; font-weight: bold; text-transform: uppercase;"> ${pokemon1.name} </span> has advantages in <span style="color: blue; font-weight: bold">${pokemon1Wins}</span> categories, 
-    <span style="color: red; font-weight: bold; text-transform: uppercase;">${pokemon2.name}</span> 
-    has advantages in <span style="color: red; font-weight: bold">${pokemon2Wins}</span> categories
-  </p>
-`;
-  console.log(comparisonResult);
+    <div clsass="result">
+      <h2>Result: </h2> 
+      <p>
+        <span style="color: blue; font-weight: bold; text-transform: uppercase;"> ${pokemon1.name} </span> 
+        has <span style="font-weight: bold;">Height:</span> <span style="color: blue;">${pokemon1.height}</span>,
+         <span style="font-weight: bold;">Weight:</span> <span style="color: blue;">${pokemon1.weight}</span>.
+          It has advantages in <span style="color: blue; font-weight: bold">${pokemon1Wins}</span> categories, 
+        <br><span style="color: #FA1171; font-weight: bold; text-transform: uppercase;">${pokemon2.name}</span> 
+        has <span style="font-weight: bold;">Height:</span> <span style="color: #FA1171;">${pokemon2.height}</span>, 
+        <span style="font-weight: bold;">Weight:</span> <span style="color: #FA1171;">${pokemon2.weight}</span>.
+        It has advantages in <span style="color: #FA1171; font-weight: bold">${pokemon2Wins}</span> categories
+      </p>
+      
+    </div>
+  `;
   return {
-    result: comparisonResult,
+    // Return an object  of  the comparison result and bar colors for both Pokemons
+    result: comparisonResult, // Include the comparison result in the object
     pokemon1BarColors: pokemon1BarColors,
     pokemon2BarColors: pokemon2BarColors,
   };
 };
 
+// Initialize variables to store the details of the selected Pokémon
 let firstSelectedPokemon = null;
 let secondSelectedPokemon = null;
 
+// Asynchronously fetch Pokémon details from the PokeAPI
 async function fetchPokemonDetails(pokemonName) {
   console.log(`Fetching details for ${pokemonName}`);
+  // Send a GET request to the PokeAPI endpoint for the specified Pokémon name
   try {
     const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
     );
+    // Create a new Pokémon object with the fetched details
     const data = await response.json();
     const pokemon = new Pokemon(
       data.name,
@@ -129,11 +142,17 @@ async function fetchPokemonDetails(pokemonName) {
   }
 }
 
+//selection of a pokemon
 async function handlePokemonSelection(selectionId, detailsContainerId) {
   console.log(`Selecting Pokemon with ID: ${selectionId}`);
+  // Get the select element corresponding to the selection ID
   const selectElement = document.getElementById(selectionId);
+  // Get the name of the pokemon selected in the dropdown menu
   const selectedPokemonName = selectElement.value;
+  // Fetch details for the selected pokemon using its name
   const pokemon = await fetchPokemonDetails(selectedPokemonName);
+
+  // Check if fetching details was unsuccessful
   if (!pokemon) {
     console.error("Failed to fetch details for", selectedPokemonName);
     return;
@@ -145,48 +164,44 @@ async function handlePokemonSelection(selectionId, detailsContainerId) {
     secondSelectedPokemon = pokemon;
   }
 
+  // Get the details container element using its ID
   const detailsContainer = document.getElementById(detailsContainerId);
+  // Display the details of the selected Pokémon in the details container
   detailsContainer.innerHTML = pokemon.showDetails();
 }
 
-// Додаємо функцію для порівняння вибраних покемонів
+//function for comparing the selected pokemon
 const compareSelectedPokemons = async () => {
   if (!firstSelectedPokemon || !secondSelectedPokemon) {
     alert("Please, choose the Pokemon!");
     return;
   }
 
-  // Логуємо процес порівняння для дебагінгу
   console.log(
     `Comparing ${firstSelectedPokemon.name} and ${secondSelectedPokemon.name}`
   );
 
-  // Використовуємо функцію compareStats для отримання результатів порівняння
+  // Call compareStats to get the comparison results
   const { result, pokemon1BarColors, pokemon2BarColors } = compareStats(
     firstSelectedPokemon,
     secondSelectedPokemon
   );
 
-  // Логуємо результат порівняння
   console.log("Comparison result:", result);
 
-  // Генеруємо HTML для відображення результатів
+  // Generate HTML to display the comparison results
   let comparisonResultHTML = `
     <p>${result}</p>
     <div class="comparison-container">
-      <div class="pokemon-comparison">
-        <h3><span style="text-transform: uppercase; font-weight: bold; color: blue;">${
-          firstSelectedPokemon.name
-        }</span>:</h3>
+    <div class="comparisonFirst">
+        <h2 style="color: blue;">${firstSelectedPokemon.name}:</h2>
         ${generateStatsHTML(firstSelectedPokemon, pokemon1BarColors)}
         <img src="${firstSelectedPokemon.image}" alt="${
     firstSelectedPokemon.name
   }" style="width:150px; height:auto;">
       </div>
-      <div class="pokemon-comparison">
-        <h3><span style="text-transform: uppercase; font-weight: bold; color: red;">${
-          secondSelectedPokemon.name
-        }</span>:</h3>
+      <div class="comparisonSecond">
+        <h2 style="color: #FA1171">${secondSelectedPokemon.name}:</h2>
         ${generateStatsHTML(secondSelectedPokemon, pokemon2BarColors)}
         <img src="${secondSelectedPokemon.image}" alt="${
     secondSelectedPokemon.name
@@ -195,11 +210,11 @@ const compareSelectedPokemons = async () => {
     </div>
   `;
 
-  // Заповнюємо контейнер результатами порівняння
+  // Fill the container with the comparison results
   const comparisonResultContainer = document.getElementById("comparisonResult");
   comparisonResultContainer.innerHTML = comparisonResultHTML;
 };
-
+// Function to generate HTML for displaying pokemon stats
 function generateStatsHTML(pokemon, barColors) {
   console.log(`Generating stats HTML for ${pokemon.name}`);
   return pokemon.stats
@@ -218,6 +233,7 @@ function generateStatsHTML(pokemon, barColors) {
     .join("");
 }
 
+// Add event listener for selecting the first pokemon
 document
   .getElementById("firstPokemonBtn")
   .addEventListener("click", () =>
@@ -229,7 +245,7 @@ document
     handlePokemonSelection("pokemonSelectTwo", "pokemonDetailsTwo")
   );
 
-// Підключаємо обробник події на кнопку для порівняння
+//event listener for comparing selected Pokemons
 document
   .getElementById("compareButton")
   .addEventListener("click", compareSelectedPokemons);
@@ -239,10 +255,7 @@ document.getElementById("compareButton").addEventListener("click", () => {
     alert("Please select both Pokémon to compare.");
     return;
   }
-  const { result, pokemonBarColors, pokemon2BarColors } = compareStats(
-    firstSelectedPokemon,
-    secondSelectedPokemon
-  );
+  const { result } = compareStats(firstSelectedPokemon, secondSelectedPokemon);
   console.log("Comparison result:", result);
 });
 
@@ -250,6 +263,7 @@ let modal = document.getElementById("myModal");
 let btn = document.getElementById("startBattleBtn");
 let span = document.getElementsByClassName("close")[0];
 
+//open the modal window
 btn.onclick = function () {
   modal.style.display = "block";
   console.log("Modal opened.");
@@ -267,38 +281,43 @@ window.onclick = function (event) {
   }
 };
 
+//to perform attack between two pokemons
 async function performAttack(attacker, defender) {
   console.log(`Attacker: ${attacker.name}, Defender: ${defender.name}`);
+  // Choose a random attack move for the attacker
   const attackMove =
     attacker.moves[Math.floor(Math.random() * attacker.moves.length)];
   const damage = calculateDamage(attackMove);
   console.log(`${attacker.name} uses ${attackMove} causing ${damage} damage.`);
+  // Find the HP stat of the defender
   const defenderHpStat = defender.stats.find((stat) => stat.name === "hp");
+  // Reduce the defender's HP by the calculated damage, ensuring it doesn't go below 0
   defenderHpStat.value = Math.max(0, defenderHpStat.value - damage);
   console.log(`${defender.name} HP after attack: ${defenderHpStat.value}`);
 
-  // Uppdatera HP-skalan i DOM
+  // Update the health bar in the DOM to reflect the defender's new HP
   updateHealthBar(defender);
 
-  // Skapa en element för att visa attacken
+  // Create an element to display the attack message in the battle log
   const battleLog = document.querySelector(".battle-log-messages");
   const attackMessage = document.createElement("p");
   attackMessage.textContent = `${attacker.name} uses ${attackMove} causing ${damage} damage. ${defender.name} HP after attack: ${defenderHpStat.value}`;
   battleLog.appendChild(attackMessage);
 
-  // Vänta en kort stund mellan varje attack
+  // Wait for a short delay between each attack
   await new Promise((resolve) => setTimeout(resolve, 1500));
 }
 
+// the initialization of the battle log with the names of the participating Pokémon
 function initializeBattleLog(pokemon1, pokemon2) {
   console.log(
     `Initializing battle log for ${pokemon1.name} vs ${pokemon2.name}`
   );
-  const log = document.getElementById("battleLog");
+  const log = document.getElementById("battleLog"); // Get the battle log element by its ID
   log.innerHTML = `
     <h2>Starting battle between <span style="color: blue;">${
       pokemon1.name
-    }</span> and <span style="color: red;">${pokemon2.name}</span></h2>
+    }</span> and <span style="color: #fa1171;">${pokemon2.name}</span></h2>
     <div class="battle-stats">
       <div class="pokemon-stats" id="${pokemon1.name}-stats">
         <h3 style="color: blue; text-transform: uppercase;">${
@@ -312,7 +331,9 @@ function initializeBattleLog(pokemon1, pokemon2) {
         </div>
       </div>
       <div class="pokemon-stats" id="${pokemon2.name}-stats">
-        <h3 style="color: red; text-transform: uppercase;">${pokemon2.name}</h3>
+        <h3 style="color: #fa1171; text-transform: uppercase;">${
+          pokemon2.name
+        }</h3>
         <div id="${pokemon2.name}-hp-bar" class="hp-bar">
           <div class="hp-bar-fill" style="width: 100%"></div>
           <span class="hp-text">${
@@ -332,13 +353,17 @@ async function battle() {
     return;
   }
   initializeBattleLog(firstSelectedPokemon, secondSelectedPokemon);
+
+  // Set the initial attacker and defender
   let attacker = firstSelectedPokemon;
   let defender = secondSelectedPokemon;
+
+  // Loop until one of the Pokémon's HP reaches zero
   while (
     attacker.stats.find((stat) => stat.name === "hp").value > 0 &&
     defender.stats.find((stat) => stat.name === "hp").value > 0
   ) {
-    await performAttack(attacker, defender);
+    await performAttack(attacker, defender); // Perform an attack and wait for it to complete
     console.log(
       `Current HP after attack: ${firstSelectedPokemon.name}: ${
         firstSelectedPokemon.stats.find((stat) => stat.name === "hp").value
@@ -346,6 +371,7 @@ async function battle() {
         secondSelectedPokemon.stats.find((stat) => stat.name === "hp").value
       }`
     );
+    // Swap the roles of attacker and defender for the next round
     [attacker, defender] = [defender, attacker];
   }
   const winner =
@@ -354,11 +380,14 @@ async function battle() {
       : defender;
 
   console.log(`${winner.name} wins the battle!`);
+
+  // Display the winner announcement in the DOM
   const winnerAnnouncement = document.querySelector(".winner-announcement");
   winnerAnnouncement.innerHTML = `<h3><span style="text-transform: uppercase;">${winner.name}</span> wins the battle!</h3>
   <img src="${winner.image}" alt="Winner: ${winner.name}" style="width:100px; height:auto;">`;
 }
 
+//to start the battle
 document
   .getElementById("startBattleBtn")
   .addEventListener("click", async () => {
@@ -367,6 +396,8 @@ document
       return;
     }
     console.log("Battle started.");
+
+    // Clear the battle log, messages, and winner announcement
     const battleLog = document.getElementById("battleLog");
     const battleMessages = document.querySelector(".battle-log-messages");
     const winnerAnnouncement = document.querySelector(".winner-announcement");
@@ -375,22 +406,26 @@ document
     winnerAnnouncement.innerHTML = "";
 
     try {
-      // Завантажуємо дані покемонів
+      // Load details of both selected Pokémon
       await Promise.all([
         fetchPokemonDetails(firstSelectedPokemon.name),
         fetchPokemonDetails(secondSelectedPokemon.name),
       ]);
 
+      // Initialize the battle log with the selected Pokémon
       initializeBattleLog(firstSelectedPokemon, secondSelectedPokemon);
 
-      battle();
+      battle(); //start the battle
     } catch (error) {
       console.error("Error starting battle:", error);
     }
   });
 
+//to reset the stats
 function resetPokemonStats(pokemon) {
   console.log(`Resetting stats for ${pokemon.name}`);
+
+  // Iterate through each stat of the Pokémon
   pokemon.stats.forEach((stat) => {
     if (stat.name === "hp") {
       stat.value = stat.maxValue;
@@ -399,13 +434,18 @@ function resetPokemonStats(pokemon) {
   updateHealthBar(pokemon);
 }
 
+//Find the health bar container element based on the Pokémon's name
 function updateHealthBar(pokemon) {
   const hpBarContainer = document.getElementById(`${pokemon.name}-hp-bar`);
   if (hpBarContainer) {
+    //find the health bar fill element
     const hpBar = hpBarContainer.querySelector(".hp-bar-fill");
     const hpText = hpBarContainer.querySelector(".hp-text");
+    //find the hp stat
     const hpStat = pokemon.stats.find((stat) => stat.name === "hp");
+    //calculate th hp percentage
     const hpPercentage = (hpStat.value / hpStat.maxValue) * 100;
+    // Update the width of the health bar and the text content of the health text element
     hpBar.style.width = `${hpPercentage}%`;
     hpText.innerText = `${hpStat.value} HP`;
     console.log(
@@ -417,7 +457,7 @@ function updateHealthBar(pokemon) {
 }
 
 function calculateDamage() {
-  const damage = Math.floor(Math.random() * 20) + 10;
+  const damage = Math.floor(Math.random() * 20) + 10; //random damage value between 10-29
   console.log(`Calculated damage: ${damage}`);
   return damage;
 }
@@ -425,9 +465,14 @@ function calculateDamage() {
 async function populateOptions() {
   console.log("Populating options for Pokémon selection.");
   const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+  //waits until the request is completed
   const data = await response.json();
+
+  // Get references to the select elements
   const select1 = document.getElementById("pokemonSelectOne");
   const select2 = document.getElementById("pokemonSelectTwo");
+
+  // iterate over the pokemon data and create options for each pokemon
   data.results.forEach((pokemon) => {
     let option1 = new Option(pokemon.name, pokemon.name);
     let option2 = new Option(pokemon.name, pokemon.name);
