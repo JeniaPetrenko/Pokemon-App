@@ -9,45 +9,45 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
       rel="stylesheet"
     />
+    <script src="main.js" defer></script>
   </head>
   <body>
     <h1>Pokedex</h1>
     <main class="main">
       <div class="choosePokemon">
         <div class="pokemonSelection">
-          <label for="pokemonSelect1">Choose your first Pokemon:</label>
-          <select id="pokemonSelect1"></select>
+          <label for="pokemonSelectOne">Choose your first Pokemon:</label>
+          <select id="pokemonSelectOne"></select>
           <button id="firstPokemonBtn">Show First Pokemon</button>
         </div>
 
         <div class="pokemonSelection">
-          <label for="pokemonSelect2">Choose your second Pokemon:</label>
-          <select id="pokemonSelect2"></select>
+          <label for="pokemonSelectTwo">Choose your second Pokemon:</label>
+          <select id="pokemonSelectTwo"></select>
           <button id="secondPokemonBtn">Show Second Pokemon</button>
         </div>
       </div>
 
       <div class="pokemonDetailsContainer">
-        <div id="pokemonDetails1" class="pokemonDetails"></div>
-        <div id="pokemonDetails2" class="pokemonDetails"></div>
+        <div id="pokemonDetailsOne" class="pokemonDetails"></div>
+        <div id="pokemonDetailsTwo" class="pokemonDetails"></div>
       </div>
 
       <button id="compareButton">Compare Pokémon</button>
 
-      <div id="comparisonResult">
-        <!-- <div id="pokemonDetails1"></div>
-        <div id="pokemonDetails2"></div> -->
-      </div>
+      <div id="comparisonResult"></div>
 
       <button id="startBattleBtn">Start Battle</button>
 
       <div id="myModal" class="modal">
         <div class="modal-content">
           <span class="close">&times;</span>
-          <div id="battleLog"></div>
+          <div id="battleLog">
+            <div class="battle-log-messages"></div>
+            <div class="winner-announcement"></div>
+          </div>
         </div>
       </div>
     </main>
-    <script src="main.js"></script>
   </body>
 </html>
