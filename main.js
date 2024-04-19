@@ -88,7 +88,7 @@ const compareStats = (pokemon1, pokemon2) => {
   let comparisonResult = `
     <div clsass="result">
       <h2>Result: </h2> 
-      <p>
+      <p class="result">
         <span style="color: blue; font-weight: bold; text-transform: uppercase;"> ${pokemon1.name} </span> 
         has <span style="font-weight: bold;">Height:</span> <span style="color: blue;">${pokemon1.height}</span>,
          <span style="font-weight: bold;">Weight:</span> <span style="color: blue;">${pokemon1.weight}</span>.

@@ -78,7 +78,7 @@ button:focus {
     border-radius: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     height: auto;
-    width: 300px;
+    width: 400px;
 
 }
 
@@ -95,9 +95,7 @@ p {
     line-height: 1.5;
 }
 
-#comparisonResult p {
-    line-height: 2.5;
-}
+
 
 .comparison-container {
     display: flex;
@@ -110,6 +108,21 @@ p {
         margin-top: 0;
         font-weight: bold;
     }
+}
+
+.comparisonFirst,
+.comparisonSecond {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: auto;
+    width: 400px;
+}
+
+.result {
+    line-height: 2.5;
+    text-align: center;
 }
 
 /*stats scale*/
