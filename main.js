@@ -198,14 +198,14 @@ const compareSelectedPokemons = async () => {
         ${generateStatsHTML(firstSelectedPokemon, pokemon1BarColors)}
         <img src="${firstSelectedPokemon.image}" alt="${
     firstSelectedPokemon.name
-  }" style="width:150px; height:auto;">
+  }" style="width:220px; height:auto;">
       </div>
       <div class="comparisonSecond">
         <h2 style="color: #FA1171">${secondSelectedPokemon.name}:</h2>
         ${generateStatsHTML(secondSelectedPokemon, pokemon2BarColors)}
         <img src="${secondSelectedPokemon.image}" alt="${
     secondSelectedPokemon.name
-  }" style="width:150px; height:auto;">
+  }" style="width:220px; height:auto;">
       </div>
     </div>
   `;
@@ -384,7 +384,7 @@ async function battle() {
   // Display the winner announcement in the DOM
   const winnerAnnouncement = document.querySelector(".winner-announcement");
   winnerAnnouncement.innerHTML = `<h3><span style="text-transform: uppercase;">${winner.name}</span> wins the battle!</h3>
-  <img src="${winner.image}" alt="Winner: ${winner.name}" style="width:100px; height:auto;">`;
+  <img src="${winner.image}" alt="Winner: ${winner.name}" style="width:220px; height:auto;">`;
 }
 
 //to start the battle
